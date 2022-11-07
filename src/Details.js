@@ -1,5 +1,6 @@
 import Carousel from "./Carousel";
 import { Component } from "react";
+import ErrorBoundary from "./ErrorBoundary";
 import { useParams } from "react-router-dom";
 
 class Details extends Component {
@@ -17,6 +18,8 @@ class Details extends Component {
     if (this.state.loading) {
       return <h2>loading … </h2>;
     }
+
+    throw new Error("This is a test");
 
     const { animal, breed, city, state, description, name, images } =
       this.state;
@@ -38,7 +41,11 @@ class Details extends Component {
 const WrappedDetails = () => {
   //replaces withRouter HOC
   const params = useParams();
-  return <Details params={params} />;
+  return (
+    <ErrorBoundary>
+      <Details params={params} />
+    </ErrorBoundary>
+  );
 };
 
 export default WrappedDetails;
